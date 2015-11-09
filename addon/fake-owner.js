@@ -1,10 +1,17 @@
+import Ember from 'ember';
 let CONTAINER = `__${new Date()}_container`;
 let REGISTRY = `__${new Date()}_registry`;
 
 export default class FakeOwner {
   constructor(object) {
     this[CONTAINER] = object.container;
-    this[REGISTRY] = object.container.registry;
+
+    if (Ember.Registry) {
+      this[REGISTRY] = object.container.registry;
+    } else {
+      // Ember < 1.12
+      this[REGISTRY] = object.container;
+    }
   }
 
   // ContainerProxyMixin methods
@@ -34,6 +41,7 @@ export default class FakeOwner {
   register() {
     return this[REGISTRY].register(...arguments);
   }
+
   registerOption() {
     return this[REGISTRY].option(...arguments);
   }
@@ -54,8 +62,13 @@ export default class FakeOwner {
     return this[REGISTRY].getOptions(...arguments);
   }
 
-  registeredOptionsForType() {
-    return this[REGISTRY].getOptionsForType(...arguments);
+  registeredOptionsForType(type) {
+    if (this[REGISTRY].getOptionsForType) {
+      return this[REGISTRY].getOptionsForType(...arguments);
+    } else {
+      // used for Ember 1.10
+      return this[REGISTRY]._typeOptions[type];
+    }
   }
 
   resolveRegistration() {
