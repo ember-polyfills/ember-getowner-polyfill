@@ -7,7 +7,8 @@ export default class FakeOwner {
     this[CONTAINER] = object.container;
 
     if (Ember.Registry) {
-      this[REGISTRY] = object.container.registry;
+      // object.container._registry is used by 1.11
+      this[REGISTRY] = object.container.registry || object.container._registry;
     } else {
       // Ember < 1.12
       this[REGISTRY] = object.container;
