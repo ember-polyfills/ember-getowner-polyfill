@@ -28,6 +28,20 @@ The returned owner object should support all of the methods of the `ContainerPro
 * http://emberjs.com/api/classes/RegistryProxyMixin.html
 * http://emberjs.com/api/classes/ContainerProxyMixin.html
 
+## Compatibility
+
+This addon is tested against quite a few past Ember versions. Check `config/ember-try.js` for the current list, but
+the list of supported Ember versions at the time of authoring was:
+
+* 1.10
+* 1.11
+* 1.12
+* 1.13
+* 2.0
+* 2.1
+* 2.2
+* 2.3 (canary at the time)
+
 ## Addon Maintenance
 
 ### Installation
