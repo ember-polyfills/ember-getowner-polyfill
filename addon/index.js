@@ -1,14 +1,18 @@
 import Ember from 'ember';
 import FakeOwner from './fake-owner';
 
-let getOwner;
+let hasGetOwner = !!Ember.getOwner;
 
-if (Ember.getOwner) {
-  getOwner = Ember.getOwner;
-} else {
-  getOwner = function(object) {
-    return new FakeOwner(object);
-  };
-}
+export default function(object) {
+  let owner;
 
-export default getOwner;
+  if (hasGetOwner) {
+    owner = Ember.getOwner(object);
+  }
+
+  if (!owner && object.container) {
+    owner = new FakeOwner(object);
+  }
+
+  return owner;
+};
