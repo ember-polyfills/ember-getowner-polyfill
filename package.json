@@ -1,6 +1,6 @@
 {
   "name": "ember-getowner-polyfill",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "The default blueprint for ember-cli addons.",
   "directories": {
     "test": "tests"
