@@ -110,3 +110,14 @@ test('it can use unregister', function(assert) {
 
   assert.equal(result, undefined, 'was able to resolveRegistration');
 });
+
+test('it can use ownerInjection', function(assert) {
+  let subject = this.subject();
+  let owner = getOwner(subject);
+  let baz = Ember.Object.create(owner.ownerInjection());
+  let bazOwner = getOwner(baz);
+
+  let result = bazOwner.lookup('whatever:lol');
+
+  assert.ok(result.isLOL, 'was able to lookup');
+});

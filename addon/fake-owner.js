@@ -27,6 +27,12 @@ export default class FakeOwner {
     return this[CONTAINER].lookupFactory(...arguments);
   }
 
+  ownerInjection() {
+    return {
+      container: this[CONTAINER]
+    };
+  }
+
   // RegistryProxyMixin methods
   //
   // => http://emberjs.com/api/classes/RegistryProxyMixin.html
