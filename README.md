@@ -4,13 +4,13 @@ This provides a polyfill for the `Ember.getOwner` feature added in Ember 2.3.
 
 ## Installation
 
-```
+```sh
 ember install ember-getowner-polyfill
 ```
 
 ## Usage
 
-```
+```javascript
 import getOwner from 'ember-getowner-polyfill';
 
 export default Ember.Service.extend({
@@ -19,6 +19,21 @@ export default Ember.Service.extend({
     // do stuff with owner
   }
 });
+```
+
+## Migration
+
+After you upgrade to Ember 2.3, you can remove ember-getowner-polyfill from
+your package.json and change the above `import` statement to:
+
+```javascript
+const { getOwner } = Ember;
+```
+
+Alternatively, you can rewrite your `getOwner()` calls to `Ember.getOwner()`:
+
+```javascript
+let owner = Ember.getOwner(this);
 ```
 
 ## Documentation
