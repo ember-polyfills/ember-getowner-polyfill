@@ -11,11 +11,11 @@ ember install ember-getowner-polyfill
 ## Usage
 
 ```javascript
-import getOwner from 'ember-getowner-polyfill';
+import Ember from 'ember';
 
 export default Ember.Service.extend({
   someMethod() {
-    let owner = getOwner(this);
+    let owner = Ember.getOwner(this);
     // do stuff with owner
   }
 });
@@ -23,18 +23,17 @@ export default Ember.Service.extend({
 
 ## Migration
 
-After you upgrade to Ember 2.3, you can remove ember-getowner-polyfill from
-your package.json and change the above `import` statement to:
+### Applications
 
-```javascript
-const { getOwner } = Ember;
-```
+After you upgrade your application to Ember 2.3, you should remove `ember-getowner-polyfill` from
+your `package.json`.
 
-Alternatively, you can rewrite your `getOwner()` calls to `Ember.getOwner()`:
+### Addons
 
-```javascript
-let owner = Ember.getOwner(this);
-```
+Addons generally support many different Ember versions, so leaving `ember-getowner-polyfill` in
+place for consumers of your addon is perfectly normal.  When the addon no longer supports Ember
+versions older than 2.4, we recommend removing `ember-getowner-polyfill` from your `package.json`
+and doing a major version bump.
 
 ## Documentation
 
@@ -55,7 +54,10 @@ the list of supported Ember versions at the time of authoring was:
 * 2.0
 * 2.1
 * 2.2
-* 2.3 (canary at the time)
+* 2.3
+* 2.4
+* 2.8
+* 2.12 (canary at the time)
 
 ## Addon Maintenance
 
