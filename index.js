@@ -2,6 +2,7 @@
 'use strict';
 
 var VersionChecker = require('ember-cli-version-checker');
+var hasBeenWarned = false;
 
 module.exports = {
   name: 'ember-getowner-polyfill',
@@ -13,8 +14,12 @@ module.exports = {
 
     if (emberVersion.lt('2.3.0')) {
       this.import('vendor/install-getowner-polyfill.js');
+    } else if (this.parent === this.project && !hasBeenWarned){
+      console.warn('ember-getowner-polyfill is not required for Ember 2.3.0 and later, please remove from your `package.json`.');
+      hasBeenWarned = true;
     }
   },
+
   _ensureThisImport: function() {
     if (!this.import) {
       this._findHost = function findHostShim() {
