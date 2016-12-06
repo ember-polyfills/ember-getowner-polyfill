@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 import { moduleFor, test } from 'ember-qunit';
+const { getOwner } = Ember;
 
 moduleFor('foo:bar', {
   beforeEach() {
