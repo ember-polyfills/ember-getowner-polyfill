@@ -1,11 +1,19 @@
 /* jshint node: true */
 'use strict';
 
+var VersionChecker = require('ember-cli-version-checker');
+
 module.exports = {
   name: 'ember-getowner-polyfill',
   included: function() {
     this._ensureThisImport();
-    this.import('vendor/install-getowner-polyfill.js');
+
+    var checker = new VersionChecker(this);
+    var emberVersion = checker.forEmber();
+
+    if (emberVersion.lt('2.3.0')) {
+      this.import('vendor/install-getowner-polyfill.js');
+    }
   },
   _ensureThisImport: function() {
     if (!this.import) {
