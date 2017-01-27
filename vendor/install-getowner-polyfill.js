@@ -1,4 +1,4 @@
-/* globals Ember */
+/* globals Ember, require */
 
 (function() {
   var _Ember;
@@ -10,8 +10,19 @@
   }
 
   if (!_Ember.getOwner) {
-    var CONTAINER = '__' + (new Date()) + '_container';
-    var REGISTRY = '__' + (new Date()) + '_registry';
+    var CONTAINER = '__' + (Date.now()) + '_container';
+    var REGISTRY = '__' + (Date.now()) + '_registry';
+    var OWNER = '__' + (Date.now()) + '_owner';
+    var SAFE_LOOKUP_FACTORY_METHOD = '__' + (Date.now()) + '_lookupFactory';
+
+    var factoryFor;
+    if (typeof require === 'function') {
+      var moduleResult = require('ember-factory-for-polyfill/vendor/ember-factory-for-polyfill/index');
+      if (moduleResult) {
+        factoryFor = moduleResult._factoryFor;
+        moduleResult._updateSafeLookupFactoryMethod(SAFE_LOOKUP_FACTORY_METHOD);
+      }
+    }
 
     var FakeOwner = function FakeOwner(object) {
       this[CONTAINER] = object.container;
@@ -28,6 +39,8 @@
     FakeOwner.prototype = {
       constructor: FakeOwner,
 
+      factoryFor: factoryFor,
+
       // ContainerProxyMixin methods
       //
       // => http://emberjs.com/api/classes/ContainerProxyMixin.html
@@ -39,9 +52,13 @@
       },
 
       _lookupFactory: function() {
-        var container = this[CONTAINER];
+        Ember.deprecate(
+          'Using "_lookupFactory" is deprecated. Please use container.factoryFor instead.',
+          false,
+          { id: 'container-lookupFactory', until: '2.13.0', url: 'TODO' }
+        );
 
-        return container.lookupFactory.apply(container, arguments);
+        return this[SAFE_LOOKUP_FACTORY_METHOD].apply(this, arguments);
       },
 
       ownerInjection: function() {
@@ -126,12 +143,24 @@
       }
     };
 
+    FakeOwner.prototype[SAFE_LOOKUP_FACTORY_METHOD] = function() {
+      var container = this[CONTAINER];
+
+      return container.lookupFactory.apply(container, arguments);
+    };
+
     Object.defineProperty(_Ember, 'getOwner', {
       get: function() {
         return function(object) {
-          if (object.container) {
-            return new FakeOwner(object);
+          var container = object.container;
+          if (!container) { return; }
+
+          if (!container[OWNER]) {
+            var owner = new FakeOwner(object);
+            container[OWNER] = owner;
           }
+
+          return container[OWNER];
         };
       }
     });
