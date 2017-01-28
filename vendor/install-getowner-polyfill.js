@@ -17,10 +17,14 @@
 
     var factoryFor;
     if (typeof require === 'function') {
-      var moduleResult = require('ember-factory-for-polyfill/vendor/ember-factory-for-polyfill/index');
-      if (moduleResult) {
-        factoryFor = moduleResult._factoryFor;
-        moduleResult._updateSafeLookupFactoryMethod(SAFE_LOOKUP_FACTORY_METHOD);
+      try {
+        var moduleResult = require('ember-factory-for-polyfill/vendor/ember-factory-for-polyfill/index');
+        if (moduleResult) {
+          factoryFor = moduleResult._factoryFor;
+          moduleResult._updateSafeLookupFactoryMethod(SAFE_LOOKUP_FACTORY_METHOD);
+        }
+      } catch(e) {
+        // if not found, we just don't support factoryFor
       }
     }
 
