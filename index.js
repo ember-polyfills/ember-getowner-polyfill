@@ -7,6 +7,8 @@ var hasBeenWarned = false;
 module.exports = {
   name: 'ember-getowner-polyfill',
   included: function() {
+    this._super.included.apply(this, arguments);
+
     this._ensureThisImport();
 
     var checker = new VersionChecker(this);
