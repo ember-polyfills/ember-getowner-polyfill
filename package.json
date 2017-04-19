@@ -2,23 +2,33 @@
   "name": "ember-getowner-polyfill",
   "version": "1.2.2",
   "description": "The default blueprint for ember-cli addons.",
+  "keywords": [
+    "ember-addon"
+  ],
+  "homepage": "https://github.com/rwjblue/ember-getowner-polyfill#readme",
+  "bugs": {
+    "url": "https://github.com/rwjblue/ember-getowner-polyfill/issues"
+  },
+  "license": "MIT",
+  "author": "Robert Jackson <me@rwjblue.com>",
+  "main": "index.js",
   "directories": {
     "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rwjblue/ember-getowner-polyfill.git"
   },
   "scripts": {
     "build": "ember build",
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rwjblue/ember-getowner-polyfill.git"
+  "dependencies": {
+    "ember-cli-babel": "^5.1.6",
+    "ember-cli-version-checker": "^1.2.0",
+    "ember-factory-for-polyfill": "^1.1.0"
   },
-  "engines": {
-    "node": ">= 0.10.0"
-  },
-  "author": "Robert Jackson <me@rwjblue.com>",
-  "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
     "ember-ajax": "^2.0.1",
@@ -42,21 +52,11 @@
     "ember-resolver": "^2.0.3",
     "loader.js": "^4.0.1"
   },
-  "keywords": [
-    "ember-addon"
-  ],
-  "dependencies": {
-    "ember-cli-babel": "^5.1.6",
-    "ember-cli-version-checker": "^1.2.0",
-    "ember-factory-for-polyfill": "^1.1.0"
+  "engines": {
+    "node": ">= 0.10.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "after": "ember-factory-for-polyfill"
-  },
-  "main": "index.js",
-  "bugs": {
-    "url": "https://github.com/rwjblue/ember-getowner-polyfill/issues"
-  },
-  "homepage": "https://github.com/rwjblue/ember-getowner-polyfill#readme"
+  }
 }
