@@ -57,6 +57,7 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
+    "before": "ember-cli-shims",
     "after": "ember-factory-for-polyfill"
   }
 }
