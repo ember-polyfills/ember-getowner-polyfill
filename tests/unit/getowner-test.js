@@ -42,32 +42,35 @@ test('it can use getOwner to register things', function(assert) {
   assert.ok(result.isBaz, 'was able to register and lookup');
 });
 
-test('it can use getOwner for the private _lookupFactory', function(assert) {
-  let testFn = () => {
-    let subject = this.subject();
-    let owner = getOwner(subject);
+// In Ember 2.15 `_lookupFactory` was removed (in favor of `factoryFor`
+if (!hasEmberVersion(2,15)) {
+  test('it can use getOwner for the private _lookupFactory', function(assert) {
+    let testFn = () => {
+      let subject = this.subject();
+      let owner = getOwner(subject);
 
-    let Baz = Ember.Object.extend();
-    Baz.reopenClass({ isBazFactory: true });
+      let Baz = Ember.Object.extend();
+      Baz.reopenClass({ isBazFactory: true });
 
-    owner.register('foo:baz', Baz);
+      owner.register('foo:baz', Baz);
 
-    let result = owner._lookupFactory('foo:baz');
+      let result = owner._lookupFactory('foo:baz');
 
-    assert.ok(result.isBazFactory, 'was able to register and _lookupFactory');
-  };
+      assert.ok(result.isBazFactory, 'was able to register and _lookupFactory');
+    };
 
-  // we only can assert that a deprecation occurs when we are using
-  // our custom `getOwner` polyfill. For Ember 2.3 - 2.11 we simply confirm
-  // the functionality (not the deprecation).
-  if (!hasEmberVersion(2,3) || hasEmberVersion(2,12)) {
-    assert.deprecations(testFn, [
-      'Using "_lookupFactory" is deprecated. Please use container.factoryFor instead.'
-    ]);
-  } else {
-    testFn();
-  }
-});
+    // we only can assert that a deprecation occurs when we are using
+    // our custom `getOwner` polyfill. For Ember 2.3 - 2.11 we simply confirm
+    // the functionality (not the deprecation).
+    if (!hasEmberVersion(2,3) || hasEmberVersion(2,12)) {
+      assert.deprecations(testFn, [
+        'Using "_lookupFactory" is deprecated. Please use container.factoryFor instead.'
+      ]);
+    } else {
+      testFn();
+    }
+  });
+}
 
 test('it can use getOwner for factoryFor', function(assert) {
   let subject = this.subject();
