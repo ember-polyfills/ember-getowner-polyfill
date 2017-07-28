@@ -25,7 +25,6 @@
     "test": "ember try:testall"
   },
   "dependencies": {
-    "ember-cli-babel": "^5.1.6",
     "ember-cli-version-checker": "^1.2.0",
     "ember-factory-for-polyfill": "^1.1.0"
   },
