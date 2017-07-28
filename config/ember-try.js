@@ -83,6 +83,14 @@ module.exports = {
       }
     },
     {
+      name: 'ember-2.12',
+      bower: {
+        dependencies: {
+          "ember": "~2.12.0"
+        }
+      }
+    },
+    {
       name: 'ember-release',
       bower: {
         dependencies: {
