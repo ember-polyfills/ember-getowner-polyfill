@@ -57,7 +57,10 @@ the list of supported Ember versions at the time of authoring was:
 * 2.3
 * 2.4
 * 2.8
-* 2.12 (canary at the time)
+* 2.12
+* 2.14
+* 2.15
+* 2.16 (canary at the time)
 
 ## Addon Maintenance
 
