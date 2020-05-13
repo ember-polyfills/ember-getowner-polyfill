@@ -1,0 +1,14 @@
+## v3.0.0 (2020-05-13)
+
+#### :boom: Breaking Change
+* [#32](https://github.com/ember-polyfills/ember-getowner-polyfill/pull/32) Update ember-cli blueprint from v2.16.2 to v3.18.0. ([@rwjblue](https://github.com/rwjblue))
+* [#32](https://github.com/ember-polyfills/ember-getowner-polyfill/pull/32) Drop support for Node < 10. ([@rwjblue](https://github.com/rwjblue))
+
+#### :rocket: Enhancement
+* [#14](https://github.com/ember-polyfills/ember-getowner-polyfill/pull/14) Add `setOwner` support ([@jamesarosen](https://github.com/jamesarosen))
+
+#### Committers: 2
+- James A Rosen ([@jamesarosen](https://github.com/jamesarosen))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
