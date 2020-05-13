@@ -66,6 +66,7 @@ before_install:
 
 install:
   - yarn install --non-interactive
+  - yarn bower install
 
 script:
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
