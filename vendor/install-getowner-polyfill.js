@@ -175,10 +175,6 @@
       return container[OWNER];
     }
 
-    function setOwner(object, owner) {
-      object[OWNER] = owner;
-    }
-
     Object.defineProperty(_Ember, 'getOwner', {
       get: function() {
         return getOwner;
@@ -187,6 +183,10 @@
   }
 
   if (!_Ember.setOwner) {
+    function setOwner(object, owner) {
+      object[OWNER] = owner;
+    }
+
     Object.defineProperty(_Ember, 'setOwner', {
       get: function() {
         return setOwner;
