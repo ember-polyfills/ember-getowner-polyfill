@@ -7,7 +7,8 @@ import { start } from 'ember-qunit';
 
 setApplication(Application.create(config.APP));
 
-let deprecations;
+let deprecations = [];
+
 Ember.Debug.registerDeprecationHandler((message, options, next) => {
   deprecations.push(message);
   next(message, options);
