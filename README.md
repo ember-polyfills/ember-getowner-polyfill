@@ -1,6 +1,7 @@
 # ember-getowner-polyfill
 
-This provides a polyfill for the `Ember.getOwner` feature added in Ember 2.3.
+This provides a polyfill for the `Ember.getOwner` and `Ember.setOwner` features
+added in Ember 2.3.
 
 ## Installation
 

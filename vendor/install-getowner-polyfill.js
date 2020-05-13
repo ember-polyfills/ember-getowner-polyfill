@@ -9,10 +9,15 @@
     _Ember = require('ember').default;
   }
 
+  var OWNER;
+
+  if (!_Ember.getOwner || !_Ember.setOwner) {
+    OWNER = '__' + (Date.now()) + '_owner';
+  }
+  
   if (!_Ember.getOwner) {
     var CONTAINER = '__' + (Date.now()) + '_container';
     var REGISTRY = '__' + (Date.now()) + '_registry';
-    var OWNER = '__' + (Date.now()) + '_owner';
     var SAFE_LOOKUP_FACTORY_METHOD = '__' + (Date.now()) + '_lookupFactory';
 
     var factoryFor;
@@ -156,6 +161,11 @@
     Object.defineProperty(_Ember, 'getOwner', {
       get: function() {
         return function(object) {
+          if (object[OWNER]) {
+            return object[OWNER];
+          }
+
+          // Fallback to finding the owner on the container
           var container = object.container;
           if (!container) { return; }
 
@@ -166,6 +176,16 @@
 
           return container[OWNER];
         };
+      }
+    });
+  }
+
+  if (!_Ember.setOwner) {
+    Object.defineProperty(_Ember, 'setOwner', {
+      get: function() {
+        return function(object, owner) {
+          object[OWNER] = owner;
+        }
       }
     });
   }
