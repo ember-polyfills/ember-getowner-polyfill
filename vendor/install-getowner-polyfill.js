@@ -9,10 +9,15 @@
     _Ember = require('ember').default;
   }
 
+  var OWNER;
+
+  if (!_Ember.getOwner || !_Ember.setOwner) {
+    OWNER = '__' + (Date.now()) + '_owner';
+  }
+
   if (!_Ember.getOwner) {
     var CONTAINER = '__' + (Date.now()) + '_container';
     var REGISTRY = '__' + (Date.now()) + '_registry';
-    var OWNER = '__' + (Date.now()) + '_owner';
     var SAFE_LOOKUP_FACTORY_METHOD = '__' + (Date.now()) + '_lookupFactory';
 
     var factoryFor;
@@ -153,19 +158,38 @@
       return container.lookupFactory.apply(container, arguments);
     };
 
+    function getOwner(object) {
+      if (object[OWNER]) {
+        return object[OWNER];
+      }
+
+      // Fallback to finding the owner on the container
+      var container = object.container;
+      if (!container) { return; }
+
+      if (!container[OWNER]) {
+        var owner = new FakeOwner(object);
+        container[OWNER] = owner;
+      }
+
+      return container[OWNER];
+    }
+
     Object.defineProperty(_Ember, 'getOwner', {
       get: function() {
-        return function(object) {
-          var container = object.container;
-          if (!container) { return; }
+        return getOwner;
+      }
+    });
+  }
 
-          if (!container[OWNER]) {
-            var owner = new FakeOwner(object);
-            container[OWNER] = owner;
-          }
+  if (!_Ember.setOwner) {
+    function setOwner(object, owner) {
+      object[OWNER] = owner;
+    }
 
-          return container[OWNER];
-        };
+    Object.defineProperty(_Ember, 'setOwner', {
+      get: function() {
+        return setOwner;
       }
     });
   }

@@ -20,6 +20,19 @@ test('calling getOwner multiple times returns the same object', function(assert)
   assert.equal(getOwner(subject), getOwner(subject));
 });
 
+test('calling getOwner multiple times with different objects that share a container returns the same object', function(assert) {
+  let subject = this.subject();
+
+  let owner = getOwner(subject);
+  owner.register('foo:baz', Ember.Object.extend({
+    isBaz: true
+  }));
+
+  let result = owner.lookup('foo:baz');
+
+  assert.strictEqual(getOwner(subject), getOwner(result));
+});
+
 test('it can use getOwner to look things up', function(assert) {
   let subject = this.subject();
   let owner = getOwner(subject);
