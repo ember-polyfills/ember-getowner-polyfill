@@ -1,7 +1,9 @@
-/*jshint node:true*/
+'use strict';
 
-module.exports = {
-  scenarios: [
+module.exports = async function() {
+  return {
+    useYarn: true,
+    scenarios: [
     {
       name: 'ember-1.10',
       bower: {
@@ -140,61 +142,6 @@ module.exports = {
         }
       }
     },
-    {
-      name: 'ember-2.16',
-      npm: {
-        devDependencies: {
-          "ember-source": "~2.16.0"
-        }
-      }
-    },
-    {
-      name: 'ember-release',
-      bower: {
-        dependencies: {
-          "ember": "components/ember#release"
-        },
-        resolutions: {
-          "ember": "release"
-        }
-      },
-      npm: {
-        devDependencies: {
-          "ember-source": null
-        }
-      }
-    },
-    {
-      name: 'ember-beta',
-      bower: {
-        dependencies: {
-          "ember": "components/ember#beta"
-        },
-        resolutions: {
-          "ember": "beta"
-        }
-      },
-      npm: {
-        devDependencies: {
-          "ember-source": null
-        }
-      }
-    },
-    {
-      name: 'ember-canary',
-      bower: {
-        dependencies: {
-          "ember": "components/ember#canary"
-        },
-        resolutions: {
-          "ember": "canary"
-        }
-      },
-      npm: {
-        devDependencies: {
-          "ember-source": null
-        }
-      }
-    }
-  ]
+    ]
+  };
 };

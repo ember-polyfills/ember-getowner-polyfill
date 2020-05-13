@@ -1,12 +1,11 @@
-/* eslint-env node */
 'use strict';
 
 var VersionChecker = require('ember-cli-version-checker');
 var hasBeenWarned = false;
 
 module.exports = {
-  name: 'ember-getowner-polyfill',
-  included: function() {
+  name: require('./package').name,
+  included() {
     this._super.included.apply(this, arguments);
 
     this._ensureThisImport();
@@ -22,7 +21,7 @@ module.exports = {
     }
   },
 
-  _ensureThisImport: function() {
+  _ensureThisImport() {
     if (!this.import) {
       this._findHost = function findHostShim() {
         var current = this;
