@@ -10,19 +10,14 @@ module.exports = {
       legacyDecorators: true
     }
   },
-  plugins: [
-    'ember'
-  ],
+  plugins: [ ],
   extends: [
     'eslint:recommended',
-    'plugin:ember/recommended'
   ],
   env: {
     browser: true
   },
-  rules: {
-    'ember/no-jquery': 'error'
-  },
+  rules: {},
   overrides: [
     // node files
     {
