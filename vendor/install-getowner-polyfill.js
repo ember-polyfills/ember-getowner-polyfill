@@ -14,7 +14,7 @@
   if (!_Ember.getOwner || !_Ember.setOwner) {
     OWNER = '__' + (Date.now()) + '_owner';
   }
-  
+
   if (!_Ember.getOwner) {
     var CONTAINER = '__' + (Date.now()) + '_container';
     var REGISTRY = '__' + (Date.now()) + '_registry';
@@ -158,24 +158,30 @@
       return container.lookupFactory.apply(container, arguments);
     };
 
+    function getOwner(object) {
+      if (object[OWNER]) {
+        return object[OWNER];
+      }
+
+      // Fallback to finding the owner on the container
+      var container = object.container;
+      if (!container) { return; }
+
+      if (!container[OWNER]) {
+        var owner = new FakeOwner(object);
+        container[OWNER] = owner;
+      }
+
+      return container[OWNER];
+    }
+
+    function setOwner(object, owner) {
+      object[OWNER] = owner;
+    }
+
     Object.defineProperty(_Ember, 'getOwner', {
       get: function() {
-        return function(object) {
-          if (object[OWNER]) {
-            return object[OWNER];
-          }
-
-          // Fallback to finding the owner on the container
-          var container = object.container;
-          if (!container) { return; }
-
-          if (!container[OWNER]) {
-            var owner = new FakeOwner(object);
-            container[OWNER] = owner;
-          }
-
-          return container[OWNER];
-        };
+        return getOwner;
       }
     });
   }
@@ -183,9 +189,7 @@
   if (!_Ember.setOwner) {
     Object.defineProperty(_Ember, 'setOwner', {
       get: function() {
-        return function(object, owner) {
-          object[OWNER] = owner;
-        }
+        return setOwner;
       }
     });
   }
