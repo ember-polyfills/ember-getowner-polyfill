@@ -1,3 +1,12 @@
+## v3.0.1 (2020-05-14)
+
+#### :bug: Bug Fix
+* [#33](https://github.com/ember-polyfills/ember-getowner-polyfill/pull/33) Move ember-cli-htmlbars to devDependencies. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v3.0.0 (2020-05-13)
 
 #### :boom: Breaking Change
