@@ -1,29 +1,21 @@
-/* globals Ember, require */
+import Ember from 'ember';
 
 (function() {
-  var _Ember;
+  let OWNER;
 
-  if (typeof Ember !== 'undefined') {
-    _Ember = Ember;
-  } else {
-    _Ember = require('ember').default;
-  }
-
-  var OWNER;
-
-  if (!_Ember.getOwner || !_Ember.setOwner) {
+  if (!Ember.getOwner || !Ember.setOwner) {
     OWNER = '__' + (Date.now()) + '_owner';
   }
 
-  if (!_Ember.getOwner) {
-    var CONTAINER = '__' + (Date.now()) + '_container';
-    var REGISTRY = '__' + (Date.now()) + '_registry';
-    var SAFE_LOOKUP_FACTORY_METHOD = '__' + (Date.now()) + '_lookupFactory';
+  if (!Ember.getOwner) {
+    let CONTAINER = '__' + (Date.now()) + '_container';
+    let REGISTRY = '__' + (Date.now()) + '_registry';
+    let SAFE_LOOKUP_FACTORY_METHOD = '__' + (Date.now()) + '_lookupFactory';
 
-    var factoryFor;
+    let factoryFor;
     if (typeof require === 'function') {
       try {
-        var moduleResult = require('ember-factory-for-polyfill/vendor/ember-factory-for-polyfill/index');
+        let moduleResult = require('ember-factory-for-polyfill/vendor/ember-factory-for-polyfill/index');
         if (moduleResult) {
           factoryFor = moduleResult._factoryFor;
           moduleResult._updateSafeLookupFactoryMethod(SAFE_LOOKUP_FACTORY_METHOD);
@@ -33,34 +25,34 @@
       }
     }
 
-    var FakeOwner = function FakeOwner(object) {
-      this[CONTAINER] = object.container;
+    class FakeOwner {
+      constructor(object) {
+        this[CONTAINER] = object.container;
 
-      if (_Ember.Registry) {
-        // object.container._registry is used by 1.11
-        this[REGISTRY] = object.container.registry || object.container._registry;
-      } else {
-        // Ember < 1.12
-        this[REGISTRY] = object.container;
+        if (Ember.Registry) {
+          // object.container._registry is used by 1.11
+          this[REGISTRY] = object.container.registry || object.container._registry;
+        } else {
+          // Ember < 1.12
+          this[REGISTRY] = object.container;
+        }
       }
-    };
 
-    FakeOwner.prototype = {
-      constructor: FakeOwner,
-
-      factoryFor: factoryFor,
+      factoryFor() {
+        return factoryFor.apply(this, arguments);
+      } 
 
       // ContainerProxyMixin methods
       //
       // => http://emberjs.com/api/classes/ContainerProxyMixin.html
       //
-      lookup: function() {
-        var container = this[CONTAINER];
+      lookup() {
+        let container = this[CONTAINER];
 
         return container.lookup.apply(container, arguments);
-      },
+      }
 
-      _lookupFactory: function() {
+      _lookupFactory() {
         Ember.deprecate(
           'Using "_lookupFactory" is deprecated. Please use container.factoryFor instead.',
           false,
@@ -68,68 +60,68 @@
         );
 
         return this[SAFE_LOOKUP_FACTORY_METHOD].apply(this, arguments);
-      },
+      }
 
-      ownerInjection: function() {
+      ownerInjection() {
         return {
           container: this[CONTAINER]
         };
-      },
+      }
 
       // RegistryProxyMixin methods
       //
       // => http://emberjs.com/api/classes/RegistryProxyMixin.html
       //
-      hasRegistration: function() {
-        var registry = this[REGISTRY];
+      hasRegistration() {
+        let registry = this[REGISTRY];
 
         return registry.has.apply(registry, arguments);
-      },
+      }
 
-      inject: function() {
-        var registry = this[REGISTRY];
+      inject() {
+        let registry = this[REGISTRY];
 
         return registry.injection.apply(registry, arguments);
-      },
+      }
 
-      register: function() {
-        var registry = this[REGISTRY];
+      register() {
+        let registry = this[REGISTRY];
 
         return registry.register.apply(registry, arguments);
-      },
+      }
 
-      registerOption: function() {
-        var registry = this[REGISTRY];
+      registerOption() {
+        let registry = this[REGISTRY];
 
         return registry.option.apply(registry, arguments);
-      },
+      }
 
-      registerOptions: function() {
-        var registry = this[REGISTRY];
+      registerOptions() {
+        let registry = this[REGISTRY];
 
         return registry.options.apply(registry, arguments);
-      },
+      }
 
-      registerOptionsForType: function() {
-        var registry = this[REGISTRY];
+      registerOptionsForType() {
+        let registry = this[REGISTRY];
 
         return registry.optionsForType.apply(registry, arguments);
-      },
+      }
 
-      registeredOption: function() {
-        var registry = this[REGISTRY];
+      registeredOption() {
+        let registry = this[REGISTRY];
 
         return registry.getOption.apply(registry, arguments);
-      },
+      }
 
-      registeredOptions: function() {
-        var registry = this[REGISTRY];
+      registeredOptions() {
+        let registry = this[REGISTRY];
 
         return registry.getOptions.apply(registry, arguments);
-      },
+      }
 
-      registeredOptionsForType: function(type) {
-        var registry = this[REGISTRY];
+      registeredOptionsForType(type) {
+        let registry = this[REGISTRY];
 
         if (registry.getOptionsForType) {
           return registry.getOptionsForType.apply(registry, arguments);
@@ -137,25 +129,25 @@
           // used for Ember 1.10
           return registry._typeOptions[type];
         }
-      },
+      }
 
-      resolveRegistration: function() {
-        var registry = this[REGISTRY];
+      resolveRegistration() {
+        let registry = this[REGISTRY];
 
         return registry.resolve.apply(registry, arguments);
-      },
+      }
 
-      unregister: function() {
-        var registry = this[REGISTRY];
+      unregister() {
+        let registry = this[REGISTRY];
 
         return registry.unregister.apply(registry, arguments);
       }
-    };
 
-    FakeOwner.prototype[SAFE_LOOKUP_FACTORY_METHOD] = function() {
-      var container = this[CONTAINER];
-
-      return container.lookupFactory.apply(container, arguments);
+      [SAFE_LOOKUP_FACTORY_METHOD]() {
+        let container = this[CONTAINER];
+  
+        return container.lookupFactory.apply(container, arguments);
+      }
     };
 
     function getOwner(object) {
@@ -164,30 +156,30 @@
       }
 
       // Fallback to finding the owner on the container
-      var container = object.container;
+      let container = object.container;
       if (!container) { return; }
 
       if (!container[OWNER]) {
-        var owner = new FakeOwner(object);
+        let owner = new FakeOwner(object);
         container[OWNER] = owner;
       }
 
       return container[OWNER];
     }
 
-    Object.defineProperty(_Ember, 'getOwner', {
+    Object.defineProperty(Ember, 'getOwner', {
       get: function() {
         return getOwner;
       }
     });
   }
 
-  if (!_Ember.setOwner) {
+  if (!Ember.setOwner) {
     function setOwner(object, owner) {
       object[OWNER] = owner;
     }
 
-    Object.defineProperty(_Ember, 'setOwner', {
+    Object.defineProperty(Ember, 'setOwner', {
       get: function() {
         return setOwner;
       }
