@@ -1,3 +1,12 @@
+## v3.0.2 (2020-05-18)
+
+#### :bug: Bug Fix
+* [#35](https://github.com/ember-polyfills/ember-getowner-polyfill/pull/35) setOwner sets the container in Ember 1 ([@mmun](https://github.com/mmun))
+
+#### Committers: 1
+- Martin Muñoz ([@mmun](https://github.com/mmun))
+
+
 ## v3.0.1 (2020-05-14)
 
 #### :bug: Bug Fix
