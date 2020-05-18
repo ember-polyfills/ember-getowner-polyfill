@@ -1,14 +1,15 @@
 import Ember from 'ember';
+import { lte } from 'ember-compatibility-helpers';
 
 (function() {
-  let OWNER;
+  let OWNER, CONTAINER;
 
   if (!Ember.getOwner || !Ember.setOwner) {
     OWNER = '__' + (Date.now()) + '_owner';
+    CONTAINER = '__' + (Date.now()) + '_container';
   }
 
   if (!Ember.getOwner) {
-    let CONTAINER = '__' + (Date.now()) + '_container';
     let REGISTRY = '__' + (Date.now()) + '_registry';
     let SAFE_LOOKUP_FACTORY_METHOD = '__' + (Date.now()) + '_lookupFactory';
 
@@ -177,6 +178,12 @@ import Ember from 'ember';
   if (!Ember.setOwner) {
     function setOwner(object, owner) {
       object[OWNER] = owner;
+
+      if (lte('1.13.13')) {
+        if (owner && owner[CONTAINER]) {
+          object.container = owner[CONTAINER];
+        }
+      }
     }
 
     Object.defineProperty(Ember, 'setOwner', {
